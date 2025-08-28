@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Swiss Time Countdown</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet" />
-  <!-- Swiss flag favicon (using inline base64 for simplicity) -->
+  <!-- Swiss flag favicon -->
   <link rel="icon" type="image/svg+xml" href="image/svg+xml;utf8,
   <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'>
     <rect width='240' height='240' fill='%23E30613'/>
@@ -26,6 +26,8 @@
     .container {
       text-align: center;
       width: 100vw;
+      position: relative;
+      height: 100px; /* fix container height for centering inside ring */
     }
     .countdown {
       font-size: 3em;
@@ -34,70 +36,77 @@
       margin-bottom: 30px;
       text-shadow: 1px 1px 8px #adadad;
     }
+    /* The rotating ring */
     .loader-circle {
       width: 84px;
       height: 84px;
       border-radius: 50%;
       border: 4px solid white;
       border-top-color: transparent;
-      position: relative;
-      margin: 0 auto 20px auto;
       animation: spin 1.5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: relative;
     }
     @keyframes spin {
       0% { transform: rotate(0deg);}
       100% { transform: rotate(360deg);}
     }
+    /* Icon holder inside ring, centered and size matching ring */
     .icon-container {
       position: absolute;
-      top: 50%;
-      left: 50%;
       width: 84px;
       height: 84px;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    /* Icons sizing + fade */
     .icon-fade {
       position: absolute;
       width: 48px;
       height: 48px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.85);
-      opacity: 0;
-      transition: opacity 0.7s, transform 0.7s;
       fill: white;
       stroke: white;
-      z-index: 2;
+      opacity: 0;
+      transform: scale(0.85);
+      transition: opacity 0.7s, transform 0.7s;
       pointer-events: all;
     }
     .icon-fade.active {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      transform: scale(1);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="countdown" id="countdown"></div>
-    <div class="loader-circle" aria-label="Loading circle"></div>
-    <div class="icon-container" aria-live="polite">
-      <!-- Locker Icon -->
-      <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24" aria-label="Locker icon" role="img">
-        <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-        <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2H10z" />
-      </svg>
-      <!-- Camera Icon -->
-      <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24" aria-label="Camera icon" role="img">
-        <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
-        <circle cx="12" cy="12" r="2" />
-      </svg>
-      <!-- Question Mark Icon -->
-      <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" aria-label="Question mark icon" role="img" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3"/>
-        <line x1="12" y1="17" x2="12" y2="17"/>
-      </svg>
+    <div class="loader-circle" aria-label="Loading indicator">
+      <div class="icon-container" aria-live="polite">
+        <!-- Locker Icon -->
+        <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24" aria-label="Locker icon" role="img">
+          <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+          <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2H10z" />
+        </svg>
+        <!-- Camera Icon -->
+        <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24" aria-label="Camera icon" role="img">
+          <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
+          <circle cx="12" cy="12" r="2" />
+        </svg>
+        <!-- Question Mark Icon -->
+        <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" aria-label="Question mark icon" role="img" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3"/>
+          <line x1="12" y1="17" x2="12" y2="17"/>
+        </svg>
+      </div>
     </div>
   </div>
 
