@@ -9,13 +9,13 @@
       height: 100vh;
       margin: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       background: #e60012;
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
       color: white;
+      flex-direction: column;
     }
     .container {
       text-align: center;
@@ -39,6 +39,11 @@
       justify-content: center;
       margin: 0 auto 20px auto;
       background: transparent;
+      animation: rotate 3s linear infinite;
+    }
+    @keyframes rotate {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
     }
     .icon-fade {
       position: absolute;
@@ -57,29 +62,12 @@
       opacity: 1;
       transform: translate(-50%, -50%) scale(1);
     }
-    button {
-      background: white;
-      color: #e60012;
-      font-weight: 700;
-      border: none;
-      border-radius: 25px;
-      padding: 12px 28px;
-      font-size: 1em;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      transition: background 0.3s, color 0.3s;
-      margin-top: 10px;
-    }
-    button:hover {
-      background: #b3000f;
-      color: white;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="countdown" id="countdown"></div>
-    <div class="loader-circle">
+    <div class="loader-circle" aria-label="Loading animation">
       <!-- Locker Icon -->
       <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24" aria-label="Locker icon" role="img">
         <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
@@ -90,14 +78,13 @@
         <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
         <circle cx="12" cy="12" r="2" />
       </svg>
-      <!-- Question Mark Icon -->
+      <!-- Question Mark Icon (stylized surprise) -->
       <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" aria-label="Question mark icon" role="img" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3"/>
         <line x1="12" y1="17" x2="12" y2="17"/>
       </svg>
     </div>
-    <button id="addCalendar">Add to Phone Calendar</button>
   </div>
 
   <script>
@@ -120,7 +107,7 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Icon animation logic: fade + scale in circle with 3 icons
+    // Icon animation logic: fade + scale in circle, 3 icons
     const icons = [
       document.getElementById('icon-locker'),
       document.getElementById('icon-camera'),
@@ -137,48 +124,6 @@
       showIcon(activeIdx);
     }, 1200);
     showIcon(activeIdx);
-
-    // Add to calendar functionality
-    document.getElementById('addCalendar').addEventListener('click', () => {
-      const startDate = new Date('2025-09-02T00:00:00+02:00');
-      const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour event
-
-      const pad = (n) => (n < 10 ? '0' + n : n);
-      const toICSDate = (d) => {
-        return d.getUTCFullYear() +
-          pad(d.getUTCMonth() + 1) +
-          pad(d.getUTCDate()) + 'T' +
-          pad(d.getUTCHours()) +
-          pad(d.getUTCMinutes()) +
-          pad(d.getUTCSeconds()) + 'Z';
-      };
-
-      const icsContent = 
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Swiss Countdown//EN
-BEGIN:VEVENT
-UID:${Date.now()}@swisscountdown
-DTSTAMP:${toICSDate(new Date())}
-DTSTART:${toICSDate(startDate)}
-DTEND:${toICSDate(endDate)}
-SUMMARY:Swiss Countdown Event
-DESCRIPTION:Countdown to September 2, 2025
-END:VEVENT
-END:VCALENDAR`;
-
-      const blob = new Blob([icsContent], {type: 'text/calendar'});
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'swiss-countdown-event.ics';
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 0);
-    });
   </script>
 </body>
 </html>
