@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Swiss Countdown</title>
+  <title>Swiss Time Countdown</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet" />
+  <!-- Swiss flag favicon (using inline base64 for simplicity) -->
+  <link rel="icon" type="image/svg+xml" href="image/svg+xml;utf8,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'>
+    <rect width='240' height='240' fill='%23E30613'/>
+    <path fill='%23fff' d='M103 17h34v34h34v34h-34v34h-34v-34h-34v-34h34z'/>
+  </svg>" />
   <style>
     body {
       height: 100vh;
@@ -13,9 +19,9 @@
       justify-content: center;
       background: #e60012;
       font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-      color: white;
       flex-direction: column;
+      color: white;
+      min-height: 100vh;
     }
     .container {
       text-align: center;
@@ -33,17 +39,23 @@
       height: 84px;
       border-radius: 50%;
       border: 4px solid white;
+      border-top-color: transparent;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin: 0 auto 20px auto;
-      background: transparent;
-      animation: rotate 3s linear infinite;
+      animation: spin 1.5s linear infinite;
     }
-    @keyframes rotate {
+    @keyframes spin {
       0% { transform: rotate(0deg);}
       100% { transform: rotate(360deg);}
+    }
+    .icon-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 84px;
+      height: 84px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
     }
     .icon-fade {
       position: absolute;
@@ -57,6 +69,7 @@
       fill: white;
       stroke: white;
       z-index: 2;
+      pointer-events: all;
     }
     .icon-fade.active {
       opacity: 1;
@@ -67,7 +80,8 @@
 <body>
   <div class="container">
     <div class="countdown" id="countdown"></div>
-    <div class="loader-circle" aria-label="Loading animation">
+    <div class="loader-circle" aria-label="Loading circle"></div>
+    <div class="icon-container" aria-live="polite">
       <!-- Locker Icon -->
       <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24" aria-label="Locker icon" role="img">
         <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
@@ -78,7 +92,7 @@
         <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
         <circle cx="12" cy="12" r="2" />
       </svg>
-      <!-- Question Mark Icon (stylized surprise) -->
+      <!-- Question Mark Icon -->
       <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" aria-label="Question mark icon" role="img" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10"/>
         <path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3"/>
@@ -88,7 +102,7 @@
   </div>
 
   <script>
-    // Countdown logic
+    // Countdown timer logic
     function updateCountdown() {
       const endDate = new Date('2025-09-02T00:00:00+02:00');
       const now = new Date();
@@ -107,18 +121,20 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Icon animation logic: fade + scale in circle, 3 icons
+    // Icon fade animation logic
     const icons = [
       document.getElementById('icon-locker'),
       document.getElementById('icon-camera'),
       document.getElementById('icon-question')
     ];
     let activeIdx = 0;
-    function showIcon(idx) {
+
+    function showIcon(index) {
       icons.forEach((icon, i) => {
-        icon.classList.toggle('active', i === idx);
+        icon.classList.toggle('active', i === index);
       });
     }
+
     setInterval(() => {
       activeIdx = (activeIdx + 1) % icons.length;
       showIcon(activeIdx);
