@@ -11,7 +11,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #e60012; /* Plain red background */
+      background: #e60012; /* Swiss red */
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
@@ -31,7 +31,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 30px; /* Space below timer for visibility */
+      margin-top: 30px;
     }
     .icon {
       width: 48px;
@@ -94,25 +94,23 @@
     </div>
   </div>
   <script>
-    // Countdown logic (end date is not included)
+    // Countdown logic: excludes stop day and has no label
     function updateCountdown() {
       const endDate = new Date('2025-09-02T00:00:00+02:00');
       const now = new Date();
       let diff = endDate - now;
 
-      // If past end date, show 0
       if (diff <= 0) {
-        document.getElementById('countdown').textContent = "00 Tage 00 Std 00 Min 00 Sek bis 2. Sept.";
+        document.getElementById('countdown').textContent = "00 Days 00 Hrs 00 Min 00 Sec";
         return;
       }
 
-      // Remove the "stop day" by calculating until midnight before
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const mins = Math.floor((diff / (1000 * 60)) % 60);
       const secs = Math.floor((diff / 1000) % 60);
       document.getElementById('countdown').textContent =
-        `${days} Tage ${hours} Std ${mins} Min ${secs} Sek bis 2. Sept.`;
+        `${String(days).padStart(2, '0')} Days ${String(hours).padStart(2, '0')} Hrs ${String(mins).padStart(2, '0')} Min ${String(secs).padStart(2, '0')} Sec`;
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
