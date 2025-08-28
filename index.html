@@ -11,31 +11,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #e60012;
-      /* Central Swiss cross (approximate as SVG) */
-      position: relative;
-      min-height: 100vh;
+      background: #e60012; /* Plain red background */
       font-family: 'Montserrat', sans-serif;
-    }
-    body::before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 180px;
-      height: 180px;
-      background: white;
-      transform: translate(-50%,-50%);
-      z-index: 0;
-      clip-path: polygon(
-        44% 0, 56% 0, 56% 44%, 100% 44%, 100% 56%, 56% 56%, 56% 100%, 44% 100%, 44% 56%, 0 56%, 0 44%, 44% 44%
-      );
+      min-height: 100vh;
     }
     .container {
-      z-index: 1;
       text-align: center;
-      position: relative;
       width: 100vw;
     }
     .countdown {
@@ -43,13 +24,14 @@
       font-size: 3em;
       font-weight: bold;
       letter-spacing: 2px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       text-shadow: 1px 1px 8px #adadad;
     }
     .loading {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 30px; /* Space below timer for visibility */
     }
     .icon {
       width: 48px;
@@ -112,15 +94,19 @@
     </div>
   </div>
   <script>
-    // Countdown timer calculation
+    // Countdown logic (end date is not included)
     function updateCountdown() {
       const endDate = new Date('2025-09-02T00:00:00+02:00');
       const now = new Date();
-      const diff = endDate - now;
-      if (diff < 0) {
-        document.getElementById('countdown').textContent = "It's time!";
+      let diff = endDate - now;
+
+      // If past end date, show 0
+      if (diff <= 0) {
+        document.getElementById('countdown').textContent = "00 Tage 00 Std 00 Min 00 Sek bis 2. Sept.";
         return;
       }
+
+      // Remove the "stop day" by calculating until midnight before
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const mins = Math.floor((diff / (1000 * 60)) % 60);
