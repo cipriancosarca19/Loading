@@ -11,10 +11,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #e60012; /* Swiss red */
+      background: #e60012;
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
-      perspective: 800px; /* Needed for 3D */
     }
     .container {
       text-align: center;
@@ -28,128 +27,62 @@
       margin-bottom: 30px;
       text-shadow: 1px 1px 8px #adadad;
     }
-    .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 30px;
-    }
-    .loader {
-      border: 4px solid white;
-      border-top: 4px solid #e60012;
+    .loader-circle {
+      width: 84px;
+      height: 84px;
+      margin: 0 auto 10px auto;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1.2s linear infinite;
-      margin: 0 auto 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
-    }
-
-    /* Dice Cube Container */
-    .dice-container {
-      width: 64px;
-      height: 64px;
+      border: 4px solid #333;
       position: relative;
-      transform-style: preserve-3d;
-      animation: dice-rotate 4.5s linear infinite;
-      margin: 0 auto;
-    }
-
-    /* Dice Faces common styles */
-    .dice-face {
-      position: absolute;
-      width: 64px;
-      height: 64px;
-      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      backface-visibility: visible;
-      fill: white;
-      stroke: white;
+      background: transparent;
     }
-
-    /* Position faces on cube */
-    .face-front {
-      transform: translateZ(32px);
-    }
-    .face-back {
-      transform: rotateY(180deg) translateZ(32px);
-    }
-    .face-right {
-      transform: rotateY(90deg) translateZ(32px);
-    }
-    .face-left {
-      transform: rotateY(-90deg) translateZ(32px);
-    }
-    .face-top {
-      transform: rotateX(90deg) translateZ(32px);
-    }
-    .face-bottom {
-      transform: rotateX(-90deg) translateZ(32px);
-    }
-
-    /* Animate the dice rotating like a rolling dice */
-    @keyframes dice-rotate {
-      0%   { transform: rotateX(0deg) rotateY(0deg); }
-      16%  { transform: rotateX(-90deg) rotateY(0deg); }
-      33%  { transform: rotateX(-90deg) rotateY(-90deg); }
-      50%  { transform: rotateX(-180deg) rotateY(-90deg); }
-      66%  { transform: rotateX(-180deg) rotateY(-180deg); }
-      83%  { transform: rotateX(-270deg) rotateY(-180deg); }
-      100% { transform: rotateX(-360deg) rotateY(-270deg); }
-    }
-
-    /* Icon styles (scaled and white) */
-    svg.icon {
+    .icon-fade {
+      position: absolute;
       width: 48px;
       height: 48px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.85);
+      opacity: 0;
+      transition: opacity 0.7s, transform 0.7s;
       fill: white;
       stroke: white;
+      z-index: 2;
+    }
+    .icon-fade.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="countdown" id="countdown"></div>
-    <div class="loading">
-      <div class="loader"></div>
-      <div class="dice-container">
-        <!-- Dice Faces with Icons -->
-        <div class="dice-face face-front">
-          <!-- Locker Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-            <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-            <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2H10z" />
-          </svg>
-        </div>
-        <div class="dice-face face-right">
-          <!-- Cheese Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-            <path d="M21 14.5A8.38 8.38 0 0 0 12 6a8.38 8.38 0 0 0-9 8.5v1a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-1z" />
-            <circle cx="8.5" cy="15.5" r="1.5" />
-            <circle cx="12" cy="12" r="1" />
-            <circle cx="15" cy="15" r="1" />
-          </svg>
-        </div>
-        <div class="dice-face face-top">
-          <!-- Camera Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-            <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
-            <circle cx="12" cy="12" r="2" />
-          </svg>
-        </div>
-        <!-- Other faces can be left blank or with some shading if desired -->
-        <div class="dice-face face-back"></div>
-        <div class="dice-face face-left"></div>
-        <div class="dice-face face-bottom"></div>
-      </div>
+    <div class="loader-circle">
+      <!-- Locker Icon SVG -->
+      <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24">
+        <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+        <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2H10z" />
+      </svg>
+      <!-- Cheese Icon SVG -->
+      <svg class="icon-fade" id="icon-cheese" viewBox="0 0 24 24">
+        <path d="M21 14.5A8.38 8.38 0 0 0 12 6a8.38 8.38 0 0 0-9 8.5v1a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-1z" />
+        <circle cx="8.5" cy="15.5" r="1.5" />
+        <circle cx="12" cy="12" r="1" />
+        <circle cx="15" cy="15" r="1" />
+      </svg>
+      <!-- Camera Icon SVG -->
+      <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24">
+        <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
+        <circle cx="12" cy="12" r="2" />
+      </svg>
     </div>
   </div>
   <script>
+    // Countdown logic
     function updateCountdown() {
       const endDate = new Date('2025-09-02T00:00:00+02:00');
       const now = new Date();
@@ -167,6 +100,24 @@
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Icon animation logic: fade + scale in circle
+    const icons = [
+      document.getElementById('icon-locker'),
+      document.getElementById('icon-cheese'),
+      document.getElementById('icon-camera')
+    ];
+    let activeIdx = 0;
+    function showIcon(idx) {
+      icons.forEach((icon, i) => {
+        icon.classList.toggle('active', i === idx);
+      });
+    }
+    setInterval(() => {
+      activeIdx = (activeIdx + 1) % icons.length;
+      showIcon(activeIdx);
+    }, 1200);
+    showIcon(activeIdx);
   </script>
 </body>
 </html>
