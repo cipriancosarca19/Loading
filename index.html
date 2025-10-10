@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Swiss Time Countdown</title>
+  <title>Time Countdown</title>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet" />
   <!-- Swiss flag favicon -->
   <link rel="icon" type="image/svg+xml" href="image/svg+xml;utf8,
@@ -111,7 +111,7 @@
     // Countdown timer logic with target date Sept 2, 2025 12:00PM local time
     function updateCountdown() {
       // Create date with year, month (0-based), day, hour(12), minute(0)
-      const endDate = new Date(2025, 8, 2, 12, 0, 0); // Note: month 8 = Sept
+      const endDate = new Date(2025, 9, 16, 12, 0, 0); // Note: month 8 = Sept
       const now = new Date();
       let diff = endDate - now;
       if (diff <= 0) {
