@@ -1,224 +1,253 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Countdown</title>
-  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" />
+  <title>Italy 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'><rect width='1' height='2' fill='%23008C45'/><rect width='1' height='2' x='1' fill='%23fff'/><rect width='1' height='2' x='2' fill='%23CD212A'/></svg>" />
   <style>
+    :root {
+      --italy-green: #008C45;
+      --italy-red: #CD212A;
+      --bg-color: #f8f9fa;
+      --text-main: #2d3436;
+    }
+
     body {
       min-height: 100vh;
       margin: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Italian Flag Gradient Background */
-      background: linear-gradient(135deg, #008C45 0%, #ffffff 50%, #CD212A 100%);
-      font-family: 'Montserrat', sans-serif;
-      flex-direction: column;
-      color: #333;
-      padding: 20px;
-      box-sizing: border-box;
+      background-color: var(--bg-color);
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      overflow: hidden;
     }
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      max-width: 600px;
-      width: 90%;
-    }
-    .countdown {
-      font-size: 2.2em;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 30px;
-      color: #CD212A;
-    }
-    .loader-circle {
-      width: 84px;
-      height: 84px;
-      border-radius: 50%;
-      border: 4px solid #008C45;
-      border-top-color: transparent;
-      animation: spin 1.5s linear infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 30px auto;
-      position: relative;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
-    }
-    .icon-container {
+
+    /* Minimalist Background Accents */
+    body::before, body::after {
+      content: "";
       position: absolute;
-      width: 84px;
-      height: 84px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.15;
     }
+    body::before { background: var(--italy-green); top: -50px; left: -50px; }
+    body::after { background: var(--italy-red); bottom: -50px; right: -50px; }
+
+    .card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 3rem;
+      border-radius: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+      text-align: center;
+      max-width: 450px;
+      width: 90%;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .time-unit {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .number {
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: -1px;
+      color: var(--text-main);
+    }
+
+    .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #b2bec3;
+      margin-top: -5px;
+    }
+
+    .icon-wrapper {
+      position: relative;
+      height: 60px;
+      margin-bottom: 1rem;
+    }
+
     .icon-fade {
       position: absolute;
-      width: 40px;
-      height: 40px;
-      fill: #008C45;
-      stroke: #008C45;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 32px;
+      height: 32px;
       opacity: 0;
-      transform: scale(0.85);
-      transition: opacity 0.7s, transform 0.7s;
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      fill: none;
+      stroke: var(--italy-green);
+      stroke-width: 1.5;
     }
+
     .icon-fade.active {
       opacity: 1;
-      transform: scale(1);
+      transform: translate(-50%, -50%) scale(1);
     }
-    /* Interaction Section */
-    .question-box {
-      margin-top: 20px;
-      border-top: 2px solid #eee;
-      padding-top: 20px;
+
+    h2 {
+      font-weight: 400;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      line-height: 1.5;
     }
-    h2 { font-size: 1.2em; margin-bottom: 20px; color: #444; }
-    .btn-group { display: flex; gap: 10px; justify-content: center; }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
     button {
-      padding: 10px 25px;
+      padding: 12px 30px;
+      border-radius: 12px;
       border: none;
-      border-radius: 5px;
+      font-family: inherit;
+      font-weight: 600;
       cursor: pointer;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: bold;
-      transition: transform 0.2s;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
     }
-    .btn-yes { background-color: #008C45; color: white; }
-    .btn-no { background-color: #CD212A; color: white; }
-    button:hover { transform: scale(1.05); opacity: 0.9; }
-    
-    #alternative-input {
-      margin-top: 20px;
+
+    .btn-yes {
+      background: var(--text-main);
+      color: white;
+    }
+
+    .btn-no {
+      background: white;
+      color: var(--text-main);
+      border: 1px solid #dfe6e9;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    #alt-input-container {
+      margin-top: 1.5rem;
       display: none;
-      animation: fadeIn 0.5s;
+      animation: slideUp 0.4s ease-out;
     }
-    input[type="text"] {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: 80%;
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #dfe6e9;
       margin-bottom: 10px;
+      box-sizing: border-box;
+      outline: none;
     }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    input:focus { border-color: var(--italy-green); }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="loader-circle" aria-label="Loading indicator">
-      <div class="icon-container">
-        <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24">
-          <path d="M12 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-          <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zm-7-2a2 2 0 0 1 4 0v2H10z" />
-        </svg>
-        <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24">
-          <path d="M21 7h-1.17l-1.83-2H7L5.17 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h17a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2zm-9 9a4 4 0 1 1 4-4 4 4 0 0 1-4 4z" />
-          <circle cx="12" cy="12" r="2" />
-        </svg>
-        <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M9 9a3 3 0 0 1 6 0c0 2-3 3-3 3"/>
-          <line x1="12" y1="17" x2="12" y2="17"/>
-        </svg>
-      </div>
+  <div class="card">
+    <div class="icon-wrapper">
+      <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
     </div>
 
-    <div class="countdown" id="countdown"></div>
-
-    <div class="question-box">
-      <h2>Poti sa iti iei liber in perioada 5-9 martie?</h2>
-      <div class="btn-group">
-        <button class="btn-yes" onclick="answer('yes')">DA</button>
-        <button class="btn-no" onclick="answer('no')">NU</button>
-      </div>
-
-      <div id="alternative-input">
-        <p>Ce perioada ar fi mai buna?</p>
-        <input type="text" id="alt-period" placeholder="Ex: 12-16 Martie">
-        <button class="btn-yes" onclick="submitAlt()">Trimite</button>
-      </div>
-      <p id="response-msg" style="margin-top:15px; font-weight:bold; color:#008C45;"></p>
+    <div class="countdown" id="timer">
+      <div class="time-unit"><span class="number" id="days">00</span><span class="label">Zile</span></div>
+      <div class="time-unit"><span class="number" id="hours">00</span><span class="label">Ore</span></div>
+      <div class="time-unit"><span class="number" id="mins">00</span><span class="label">Min</span></div>
     </div>
+
+    <h2>Poti sa iti iei liber in perioada<br><strong>5-9 martie?</strong></h2>
+
+    <div class="btn-group" id="main-btns">
+      <button class="btn-yes" onclick="handleResponse('yes')">Da, sigur</button>
+      <button class="btn-no" onclick="handleResponse('no')">Nu pot</button>
+    </div>
+
+    <div id="alt-input-container">
+      <input type="text" id="alt-period" placeholder="Scrie perioada potrivită...">
+      <button class="btn-yes" style="width: 100%" onclick="submitAlt()">Trimite</button>
+    </div>
+
+    <p id="feedback" style="margin-top: 1.5rem; font-size: 0.9rem; font-weight: 600; display: none;"></p>
   </div>
 
   <script>
-    // Countdown logic for March 5th, 2026
-    function updateCountdown() {
-      // March is month 2 (0-indexed)
-      const endDate = new Date(2026, 2, 5, 0, 0, 0); 
+    // Countdown to March 5, 2026
+    function updateTimer() {
+      const target = new Date(2026, 2, 5, 0, 0, 0); 
       const now = new Date();
-      let diff = endDate - now;
+      const diff = target - now;
 
-      if (diff <= 0) {
-        document.getElementById('countdown').textContent = "E TIMPUL!";
-        return;
-      }
+      if (diff <= 0) return;
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((diff / (1000 * 60)) % 60);
-      const secs = Math.floor((diff / 1000) % 60);
-
-      document.getElementById('countdown').textContent =
-        `${String(days).padStart(2, '0')}z ${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
+      document.getElementById('days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      document.getElementById('hours').innerText = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      document.getElementById('mins').innerText = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
     }
+    setInterval(updateTimer, 1000);
+    updateTimer();
 
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
-
-    // Icon fade animation logic
-    const icons = [
-      document.getElementById('icon-locker'),
-      document.getElementById('icon-camera'),
-      document.getElementById('icon-question')
-    ];
-    let activeIdx = 0;
-
-    function showIcon(index) {
-      icons.forEach((icon, i) => {
-        icon.classList.toggle('active', i === index);
-      });
-    }
-
+    // Subtle Icon Rotation
+    const icons = [document.getElementById('icon-locker'), document.getElementById('icon-camera'), document.getElementById('icon-question')];
+    let idx = 0;
     setInterval(() => {
-      activeIdx = (activeIdx + 1) % icons.length;
-      showIcon(activeIdx);
-    }, 1500);
-    showIcon(activeIdx);
+      icons.forEach(i => i.classList.remove('active'));
+      idx = (idx + 1) % icons.length;
+      icons[idx].classList.add('active');
+    }, 2500);
+    icons[0].classList.add('active');
 
-    // Form logic
-    function answer(choice) {
-      const altInput = document.getElementById('alternative-input');
-      const msg = document.getElementById('response-msg');
+    // UI Interactions
+    function handleResponse(ans) {
+      const feedback = document.getElementById('feedback');
+      const altContainer = document.getElementById('alt-input-container');
       
-      if(choice === 'yes') {
-        altInput.style.display = 'none';
-        msg.textContent = "Perfect! Pregătește bagajele! 🇮🇹";
-        msg.style.color = "#008C45";
+      if (ans === 'yes') {
+        altContainer.style.display = 'none';
+        feedback.style.display = 'block';
+        feedback.style.color = 'var(--italy-green)';
+        feedback.innerText = "Excelent! Andiamo a Italia! 🇮🇹";
       } else {
-        altInput.style.display = 'block';
-        msg.textContent = "";
+        feedback.style.display = 'none';
+        altContainer.style.display = 'block';
       }
     }
 
     function submitAlt() {
       const val = document.getElementById('alt-period').value;
-      if(val) {
-        document.getElementById('response-msg').textContent = "Am notat perioada: " + val + "!";
-        document.getElementById('alternative-input').style.display = 'none';
+      if (val) {
+        const feedback = document.getElementById('feedback');
+        feedback.style.display = 'block';
+        feedback.style.color = 'var(--text-main)';
+        feedback.innerText = `Am notat: ${val}. Verificăm!`;
+        document.getElementById('alt-input-container').style.display = 'none';
       }
     }
   </script>
