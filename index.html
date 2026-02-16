@@ -10,7 +10,8 @@
     :root {
       --accent-red: #AA151B;
       --accent-gold: #F1BF00;
-      --bg-color: #fcfcfc;
+      /* Slightly darker base to make the colors pop */
+      --bg-color: #f4f4f4; 
       --text-main: #2d3436;
     }
 
@@ -34,7 +35,7 @@
       color: var(--text-main);
     }
 
-    /* Moving Spanish Flag Background */
+    /* VIBRANT MOVING BACKGROUND */
     .bg-container {
       position: fixed;
       top: 0;
@@ -42,45 +43,46 @@
       width: 100vw;
       height: 100vh;
       z-index: -1;
-      filter: blur(80px);
-      background: #fff;
+      filter: blur(100px); /* Soft focus for the blobs */
+      background: var(--bg-color);
     }
 
     .blob {
       position: absolute;
       border-radius: 50%;
-      opacity: 0.25;
+      opacity: 0.45; /* Increased opacity so they aren't lost */
       animation: drift linear infinite;
     }
 
-    .red-1 { width: 500px; height: 500px; background: var(--accent-red); top: -10%; left: -10%; animation-duration: 25s; }
-    .gold-1 { width: 600px; height: 600px; background: var(--accent-gold); bottom: -15%; right: -5%; animation-duration: 20s; animation-direction: reverse; }
-    .red-2 { width: 400px; height: 400px; background: var(--accent-red); bottom: 10%; left: 10%; animation-duration: 18s; }
+    /* Larger, more aggressive color blobs */
+    .red-1 { width: 70vw; height: 70vw; background: var(--accent-red); top: -20%; left: -10%; animation-duration: 20s; }
+    .gold-1 { width: 80vw; height: 80vw; background: var(--accent-gold); bottom: -20%; right: -10%; animation-duration: 25s; animation-direction: reverse; }
+    .red-2 { width: 50vw; height: 50vw; background: var(--accent-red); top: 30%; left: 30%; animation-duration: 15s; opacity: 0.2; }
 
     @keyframes drift {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      33% { transform: translate(10vw, 5vh) rotate(120deg); }
-      66% { transform: translate(-5vw, 15vh) rotate(240deg); }
-      100% { transform: translate(0, 0) rotate(360deg); }
+      0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+      33% { transform: translate(15vw, 10vh) scale(1.1) rotate(120deg); }
+      66% { transform: translate(-10vw, 20vh) scale(0.9) rotate(240deg); }
+      100% { transform: translate(0, 0) scale(1) rotate(360deg); }
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.65);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      padding: 3rem 1rem;
+      background: rgba(255, 255, 255, 0.4); /* Higher transparency for better glass effect */
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      padding: 3.5rem 1.5rem;
       border-radius: 40px;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.05);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.08);
       text-align: center;
       width: 90%;
       max-width: 480px;
-      border: 1px solid rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.6);
     }
 
     .icon-wrapper {
       position: relative;
       height: 45px;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .icon-fade {
@@ -88,13 +90,13 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%) scale(0.8);
-      width: 35px;
-      height: 35px;
+      width: 38px;
+      height: 38px;
       opacity: 0;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       fill: none;
       stroke: var(--accent-red);
-      stroke-width: 1.8;
+      stroke-width: 2;
     }
 
     .icon-fade.active {
@@ -106,61 +108,63 @@
       display: flex;
       justify-content: center;
       gap: 1.2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
 
-    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
     .number { 
-        font-size: 2.6rem; 
+        font-size: 2.8rem; 
         font-weight: 600; 
-        letter-spacing: -1.5px; 
+        letter-spacing: -2px; 
         line-height: 1;
     }
     .label { 
-        font-size: 0.6rem; 
+        font-size: 0.65rem; 
         text-transform: uppercase; 
-        letter-spacing: 1.5px; 
-        color: #888; 
-        margin-top: 8px;
+        letter-spacing: 2px; 
+        color: #636e72; 
+        margin-top: 10px;
     }
 
-    /* Pulse effect for seconds */
+    /* HEARTBEAT SECONDS */
     #secs {
         color: var(--accent-red);
-        animation: pulse 1s ease-in-out infinite;
+        animation: heartbeat 1s ease-in-out infinite;
         display: inline-block;
     }
 
-    @keyframes pulse {
+    @keyframes heartbeat {
         0% { transform: scale(1); }
-        50% { transform: scale(1.08); opacity: 0.8; }
+        15% { transform: scale(1.15); }
+        30% { transform: scale(1); }
+        45% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
 
     .reveal-text {
       font-weight: 300;
       font-size: 1.1rem;
-      letter-spacing: 1px;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      padding-top: 20px;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding-top: 25px;
       margin: 0 auto;
-      width: 60%;
+      width: 65%;
     }
 
     .reveal-date {
         color: var(--accent-red);
         font-weight: 600;
         display: block;
-        margin-top: 4px;
+        margin-top: 5px;
     }
 
     .copyright {
       position: absolute;
       bottom: 2rem;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 4px;
-      color: #95a5a6;
+      letter-spacing: 5px;
+      color: #636e72;
+      opacity: 0.6;
     }
   </style>
 </head>
@@ -196,7 +200,6 @@
   </div>
 
   <script>
-    // 1. TIMER LOGIC
     function updateTimer() {
       const target = new Date(2026, 2, 5, 0, 0, 0); 
       const now = new Date();
@@ -218,14 +221,14 @@
       document.getElementById('secs').innerText = String(s).padStart(2, '0');
     }
 
-    // 2. ICON ANIMATION (Now 1 second frequency)
+    // ICON ANIMATION (Every 0.8 seconds for high frequency)
     const icons = [document.getElementById('icon-plane'), document.getElementById('icon-sun'), document.getElementById('icon-map')];
     let idx = 0;
     setInterval(() => {
       icons.forEach(i => i.classList.remove('active'));
       idx = (idx + 1) % icons.length;
       icons[idx].classList.add('active');
-    }, 1000); 
+    }, 800); 
     icons[0].classList.add('active');
 
     setInterval(updateTimer, 1000);
