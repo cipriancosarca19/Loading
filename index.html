@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>The Surprise - Spain 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
@@ -12,14 +12,21 @@
       --text-main: #2d3436;
     }
 
-    * { box-sizing: border-box; }
+    /* Apply background to HTML to ensure it bleeds into the notch and home bar */
+    html {
+      height: -webkit-fill-available;
+      background: #fcfaf7; /* Base Spanish off-white */
+      margin: 0;
+      padding: 0;
+    }
 
-    /* The ultimate iPhone background fix */
     body {
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100dvh; /* Dynamic height for mobile */
+      /* Dynamic viewport height specifically for mobile browsers */
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -27,39 +34,38 @@
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
       overflow: hidden;
-      background-color: #fff;
       position: relative;
     }
 
-    /* This layer creates the Spanish Flag "Aurora" effect */
-    body::before {
-      content: "";
+    /* Fixed overlay that forces the color to stay pinned behind browser bars */
+    .bg-layer {
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      background: radial-gradient(circle at 20% 20%, rgba(170, 21, 27, 0.15) 0%, transparent 40%),
-                  radial-gradient(circle at 80% 80%, rgba(241, 191, 0, 0.2) 0%, transparent 40%),
-                  radial-gradient(circle at 50% 50%, rgba(170, 21, 27, 0.1) 0%, transparent 50%);
+      /* Faded Spanish Flag Tones */
+      background: 
+        radial-gradient(circle at 10% 10%, rgba(170, 21, 27, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(241, 191, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 10%, rgba(241, 191, 0, 0.1) 0%, transparent 40%);
       background-color: #fcfaf7;
-      background-size: 200% 200%;
-      animation: meshFlow 12s ease-in-out infinite alternate;
+      animation: drift 15s ease-in-out infinite alternate;
     }
 
-    @keyframes meshFlow {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 100% 100%; }
+    @keyframes drift {
+      from { transform: scale(1); }
+      to { transform: scale(1.1) translate(2%, 2%); }
     }
 
     .card {
       background: rgba(255, 255, 255, 0.75);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      padding: 3rem 1.5rem;
+      padding: 3rem 1rem;
       border-radius: 40px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.03);
       text-align: center;
       width: 85%;
       max-width: 400px;
@@ -81,7 +87,7 @@
       width: 36px;
       height: 36px;
       opacity: 0;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       fill: none;
       stroke: var(--accent-red);
       stroke-width: 1.5;
@@ -99,20 +105,31 @@
       margin-bottom: 2rem;
     }
 
-    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
-    .number { font-size: 2.4rem; font-weight: 600; letter-spacing: -1px; line-height: 1; }
-    .label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: #a0a0a0; margin-top: 8px; }
+    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 62px; }
+    .number { 
+        font-size: 2.4rem; 
+        font-weight: 600; 
+        letter-spacing: -1.5px; 
+        line-height: 1; 
+    }
+    .label { 
+        font-size: 0.55rem; 
+        text-transform: uppercase; 
+        letter-spacing: 1.5px; 
+        color: #999; 
+        margin-top: 8px; 
+    }
 
     #secs {
         color: var(--accent-red);
-        animation: pulse 1s ease-in-out infinite;
+        animation: heartPulse 1s ease-in-out infinite;
         display: inline-block;
     }
 
-    @keyframes pulse {
+    @keyframes heartPulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
+        15% { transform: scale(1.1); }
+        30% { transform: scale(1); }
     }
 
     .reveal-text {
@@ -120,23 +137,32 @@
       font-size: 0.95rem;
       border-top: 1px solid rgba(0,0,0,0.05);
       padding-top: 20px;
-      width: 70%;
+      width: 60%;
       margin: 0 auto;
     }
 
-    .reveal-date { color: var(--accent-red); font-weight: 600; display: block; margin-top: 5px; font-size: 1.1rem; }
+    .reveal-date { 
+        color: var(--accent-red); 
+        font-weight: 600; 
+        display: block; 
+        margin-top: 5px; 
+        font-size: 1.1rem; 
+    }
 
     .copyright {
       position: absolute;
+      /* This specifically targets the safe area at the bottom of iPhones */
       bottom: calc(1.5rem + env(safe-area-inset-bottom));
       font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 4px;
-      color: #b0b0b0;
+      color: rgba(0,0,0,0.25);
     }
   </style>
 </head>
 <body>
+
+  <div class="bg-layer"></div>
 
   <div class="card">
     <div class="icon-wrapper">
@@ -163,6 +189,7 @@
 
   <script>
     function updateTimer() {
+      // Current Date for 2026 Countdown
       const target = new Date(2026, 2, 5, 0, 0, 0); 
       const now = new Date();
       const diff = target - now;
@@ -183,13 +210,14 @@
       document.getElementById('secs').innerText = String(s).padStart(2, '0');
     }
 
+    // High speed icon swapping
     const icons = [document.getElementById('icon-plane'), document.getElementById('icon-sun'), document.getElementById('icon-map')];
     let idx = 0;
     setInterval(() => {
       icons.forEach(i => i.classList.remove('active'));
       idx = (idx + 1) % icons.length;
       icons[idx].classList.add('active');
-    }, 500); // Swapping every 0.5s for that faster frequency you wanted
+    }, 500); 
 
     setInterval(updateTimer, 1000);
     updateTimer();
