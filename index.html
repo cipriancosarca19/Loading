@@ -8,8 +8,8 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23AA151B' opacity='0.5'/><circle cx='60' cy='50' r='40' fill='%23F1BF00' opacity='0.5'/></svg>" />
   <style>
     :root {
-      --accent-red: #AA151B;    /* Spanish Flag Red */
-      --accent-gold: #F1BF00;   /* Spanish Flag Gold */
+      --accent-red: #AA151B;
+      --accent-gold: #F1BF00;
       --bg-color: #fcfcfc;
       --text-main: #2d3436;
     }
@@ -22,6 +22,7 @@
       width: 100%;
       height: 100%;
       background-color: var(--bg-color);
+      overflow: hidden;
     }
 
     body {
@@ -31,51 +32,54 @@
       justify-content: center;
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
-      overflow: hidden; 
-      position: relative;
     }
 
-    /* Enhanced Spanish Flag Background Effect */
-    .bg-blobs {
+    /* Moving Spanish Flag Background */
+    .bg-container {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       z-index: -1;
-      overflow: hidden;
+      filter: blur(80px);
+      background: #fff;
     }
 
     .blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.15;
+      opacity: 0.25;
+      animation: drift linear infinite;
     }
 
-    .blob-red-top { width: 60vw; height: 60vw; background: var(--accent-red); top: -20%; left: -10%; }
-    .blob-gold-mid { width: 80vw; height: 80vw; background: var(--accent-gold); top: 10%; right: -20%; }
-    .blob-red-bottom { width: 50vw; height: 50vw; background: var(--accent-red); bottom: -10%; left: 20%; }
+    .red-1 { width: 500px; height: 500px; background: var(--accent-red); top: -10%; left: -10%; animation-duration: 25s; }
+    .gold-1 { width: 600px; height: 600px; background: var(--accent-gold); bottom: -15%; right: -5%; animation-duration: 20s; animation-direction: reverse; }
+    .red-2 { width: 400px; height: 400px; background: var(--accent-red); bottom: 10%; left: 10%; animation-duration: 18s; }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(10vw, 5vh) rotate(120deg); }
+      66% { transform: translate(-5vw, 15vh) rotate(240deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
+    }
 
     .card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px);
-      padding: 3rem 1.5rem;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      padding: 3rem 1rem;
       border-radius: 40px;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.03);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.05);
       text-align: center;
       width: 90%;
-      max-width: 450px;
-      border: 1px solid rgba(255,255,255,0.8);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      max-width: 480px;
+      border: 1px solid rgba(255,255,255,0.7);
     }
 
     .icon-wrapper {
       position: relative;
-      height: 40px;
-      width: 100%;
+      height: 45px;
       margin-bottom: 1.5rem;
     }
 
@@ -83,30 +87,31 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      width: 32px;
-      height: 32px;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 35px;
+      height: 35px;
       opacity: 0;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       fill: none;
       stroke: var(--accent-red);
-      stroke-width: 1.5;
+      stroke-width: 1.8;
     }
 
     .icon-fade.active {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      transform: translate(-50%, -50%) scale(1.1);
     }
 
     .countdown {
       display: flex;
-      gap: 1rem;
+      justify-content: center;
+      gap: 1.2rem;
       margin-bottom: 2rem;
     }
 
-    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
     .number { 
-        font-size: 2.5rem; 
+        font-size: 2.6rem; 
         font-weight: 600; 
         letter-spacing: -1.5px; 
         line-height: 1;
@@ -115,24 +120,38 @@
         font-size: 0.6rem; 
         text-transform: uppercase; 
         letter-spacing: 1.5px; 
-        color: #a0a0a0; 
+        color: #888; 
         margin-top: 8px;
+    }
+
+    /* Pulse effect for seconds */
+    #secs {
+        color: var(--accent-red);
+        animation: pulse 1s ease-in-out infinite;
+        display: inline-block;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); opacity: 0.8; }
+        100% { transform: scale(1); }
     }
 
     .reveal-text {
       font-weight: 300;
       font-size: 1.1rem;
-      color: var(--text-main);
       letter-spacing: 1px;
-      margin-top: 5px;
       border-top: 1px solid rgba(0,0,0,0.06);
       padding-top: 20px;
-      width: 70%;
+      margin: 0 auto;
+      width: 60%;
     }
 
     .reveal-date {
         color: var(--accent-red);
         font-weight: 600;
+        display: block;
+        margin-top: 4px;
     }
 
     .copyright {
@@ -140,17 +159,17 @@
       bottom: 2rem;
       font-size: 0.65rem;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 4px;
       color: #95a5a6;
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-blobs">
-    <div class="blob blob-red-top"></div>
-    <div class="blob blob-gold-mid"></div>
-    <div class="blob blob-red-bottom"></div>
+  <div class="bg-container">
+    <div class="blob red-1"></div>
+    <div class="blob gold-1"></div>
+    <div class="blob red-2"></div>
   </div>
 
   <div class="card">
@@ -164,11 +183,11 @@
       <div class="time-unit"><span class="number" id="days">00</span><span class="label">Zile</span></div>
       <div class="time-unit"><span class="number" id="hours">00</span><span class="label">Ore</span></div>
       <div class="time-unit"><span class="number" id="mins">00</span><span class="label">Min</span></div>
-      <div class="time-unit"><span class="number" id="secs" style="color: var(--accent-red);">00</span><span class="label">Sec</span></div>
+      <div class="time-unit"><span class="number" id="secs">00</span><span class="label">Sec</span></div>
     </div>
 
     <div class="reveal-text">
-        The Reveal <br> <span class="reveal-date">01.03.2026</span>
+        The Reveal <span class="reveal-date">01.03.2026</span>
     </div>
   </div>
 
@@ -179,7 +198,7 @@
   <script>
     // 1. TIMER LOGIC
     function updateTimer() {
-      const target = new Date(2026, 2, 5, 0, 0, 0); // March 5, 2026
+      const target = new Date(2026, 2, 5, 0, 0, 0); 
       const now = new Date();
       const diff = target - now;
 
@@ -199,14 +218,14 @@
       document.getElementById('secs').innerText = String(s).padStart(2, '0');
     }
 
-    // 2. ICON ANIMATION (Faster: 1.5s interval)
+    // 2. ICON ANIMATION (Now 1 second frequency)
     const icons = [document.getElementById('icon-plane'), document.getElementById('icon-sun'), document.getElementById('icon-map')];
     let idx = 0;
     setInterval(() => {
       icons.forEach(i => i.classList.remove('active'));
       idx = (idx + 1) % icons.length;
       icons[idx].classList.add('active');
-    }, 1500); 
+    }, 1000); 
     icons[0].classList.add('active');
 
     setInterval(updateTimer, 1000);
