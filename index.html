@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>The Surprise - Spain 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
@@ -14,61 +14,55 @@
 
     * { box-sizing: border-box; }
 
-    /* Force the HTML and Body to be a solid container */
-    html, body {
+    /* The ultimate iPhone background fix */
+    body {
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%;
-      background-color: #ffffff; /* Fallback */
+      min-height: 100dvh; /* Dynamic height for mobile */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       font-family: 'Inter', sans-serif;
-      overflow: hidden; /* Prevents accidental bounce scrolling */
+      color: var(--text-main);
+      overflow: hidden;
+      background-color: #fff;
+      position: relative;
     }
 
-    /* This layer ensures the background covers EVERY pixel including notch/bottom bar */
-    .bg-full-screen {
+    /* This layer creates the Spanish Flag "Aurora" effect */
+    body::before {
+      content: "";
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100%;
-      height: 100%;
       z-index: -1;
-      background: linear-gradient(
-        135deg, 
-        #ffffff 0%, 
-        rgba(170, 21, 27, 0.08) 25%, 
-        rgba(241, 191, 0, 0.12) 50%, 
-        rgba(170, 21, 27, 0.08) 75%, 
-        #ffffff 100%
-      );
-      background-size: 400% 400%;
-      animation: softFlow 18s ease-in-out infinite;
+      background: radial-gradient(circle at 20% 20%, rgba(170, 21, 27, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 80%, rgba(241, 191, 0, 0.2) 0%, transparent 40%),
+                  radial-gradient(circle at 50% 50%, rgba(170, 21, 27, 0.1) 0%, transparent 50%);
+      background-color: #fcfaf7;
+      background-size: 200% 200%;
+      animation: meshFlow 12s ease-in-out infinite alternate;
     }
 
-    @keyframes softFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    body {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    @keyframes meshFlow {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.7);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      padding: 3.5rem 1rem;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      padding: 3rem 1.5rem;
       border-radius: 40px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.04);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.04);
       text-align: center;
-      width: 88%;
-      max-width: 420px;
+      width: 85%;
+      max-width: 400px;
       border: 1px solid rgba(255, 255, 255, 0.8);
       z-index: 10;
     }
@@ -83,11 +77,11 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) scale(0.8);
+      transform: translate(-50%, -50%);
       width: 36px;
       height: 36px;
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s ease;
       fill: none;
       stroke: var(--accent-red);
       stroke-width: 1.5;
@@ -102,72 +96,47 @@
       display: flex;
       justify-content: center;
       gap: 0.5rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
     }
 
-    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 62px; }
-    
-    .number { 
-        font-size: 2.4rem; 
-        font-weight: 600; 
-        letter-spacing: -1.5px; 
-        line-height: 1;
-    }
-
-    .label { 
-        font-size: 0.55rem; 
-        text-transform: uppercase; 
-        letter-spacing: 1.5px; 
-        color: #999; 
-        margin-top: 10px;
-    }
+    .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+    .number { font-size: 2.4rem; font-weight: 600; letter-spacing: -1px; line-height: 1; }
+    .label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: #a0a0a0; margin-top: 8px; }
 
     #secs {
         color: var(--accent-red);
-        animation: heartPulse 1s ease-out infinite;
+        animation: pulse 1s ease-in-out infinite;
         display: inline-block;
     }
 
-    @keyframes heartPulse {
+    @keyframes pulse {
         0% { transform: scale(1); }
-        15% { transform: scale(1.1); }
-        30% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
     }
 
     .reveal-text {
       font-weight: 300;
       font-size: 0.95rem;
-      border-top: 1px solid rgba(0,0,0,0.06);
-      padding-top: 25px;
-      width: 60%;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 20px;
+      width: 70%;
       margin: 0 auto;
-      letter-spacing: 0.5px;
     }
 
-    .reveal-date {
-        color: var(--accent-red);
-        font-weight: 600;
-        display: block;
-        margin-top: 4px;
-        font-size: 1.1rem;
-    }
+    .reveal-date { color: var(--accent-red); font-weight: 600; display: block; margin-top: 5px; font-size: 1.1rem; }
 
     .copyright {
       position: absolute;
-      /* env(safe-area-inset-bottom) handles the iPhone swipe bar area */
-      bottom: calc(1rem + env(safe-area-inset-bottom));
-      font-size: 0.65rem;
+      bottom: calc(1.5rem + env(safe-area-inset-bottom));
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 4px;
-      color: rgba(0,0,0,0.3);
-      width: 100%;
-      text-align: center;
+      color: #b0b0b0;
     }
   </style>
 </head>
 <body>
-
-  <div class="bg-full-screen"></div>
 
   <div class="card">
     <div class="icon-wrapper">
@@ -220,7 +189,7 @@
       icons.forEach(i => i.classList.remove('active'));
       idx = (idx + 1) % icons.length;
       icons[idx].classList.add('active');
-    }, 600); 
+    }, 500); // Swapping every 0.5s for that faster frequency you wanted
 
     setInterval(updateTimer, 1000);
     updateTimer();
