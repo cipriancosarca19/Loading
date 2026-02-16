@@ -3,250 +3,146 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Surprise</title>
+  <title>The Surprise - Spain</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23008C45' opacity='0.5'/><circle cx='60' cy='50' r='40' fill='%23CD212A' opacity='0.5'/></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23AA151B' opacity='0.5'/><circle cx='60' cy='50' r='40' fill='%23F1BF00' opacity='0.5'/></svg>" />
   <style>
     :root {
-      --accent-green: #008C45;
-      --accent-red: #CD212A;
-      --bg-color: #f8f9fa;
+      --accent-red: #AA151B;    /* Spanish Flag Red */
+      --accent-gold: #F1BF00;   /* Spanish Flag Gold */
+      --bg-color: #fcfcfc;
       --text-main: #2d3436;
     }
 
-    /* Fixed centering using Flexbox on the body */
     body {
       height: 100vh;
       margin: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       background-color: var(--bg-color);
       font-family: 'Inter', sans-serif;
       color: var(--text-main);
-      overflow: hidden; /* Prevents scrollbars during transitions */
+      overflow: hidden;
     }
 
+    /* Spain-themed ambient background */
     body::before, body::after {
       content: "";
       position: absolute;
-      width: 40vw;
-      height: 40vw;
+      width: 50vw;
+      height: 50vw;
       border-radius: 50%;
-      filter: blur(100px);
+      filter: blur(120px);
       z-index: -1;
-      opacity: 0.12;
+      opacity: 0.15;
     }
-    body::before { background: var(--accent-green); top: -10%; left: -10%; }
-    body::after { background: var(--accent-red); bottom: -10%; right: -10%; }
+    body::before { background: var(--accent-red); top: -10%; left: -10%; }
+    body::after { background: var(--accent-gold); bottom: -10%; right: -10%; }
 
     .card {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(15px);
-      padding: 3rem;
-      border-radius: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      padding: 4rem 2rem;
+      border-radius: 40px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.03);
       text-align: center;
-      width: 100%;
-      max-width: 400px;
-      border: 1px solid rgba(255,255,255,0.6);
-      /* This ensures the card itself doesn't jump when content expands */
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 90%;
+      max-width: 450px;
+      border: 1px solid rgba(255,255,255,0.8);
       display: flex;
       flex-direction: column;
       align-items: center;
-    }
-
-    .icon-wrapper {
-      position: relative;
-      height: 50px;
-      width: 100%;
-      margin-bottom: 1.5rem;
-    }
-
-    .icon-fade {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      width: 32px;
-      height: 32px;
-      opacity: 0;
-      transition: all 0.8s ease;
-      fill: none;
-      stroke: var(--accent-green);
-      stroke-width: 1.5;
-    }
-
-    .icon-fade.active {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
+      transition: all 0.5s ease;
     }
 
     .countdown {
       display: flex;
-      gap: 1.2rem;
-      margin-bottom: 2.5rem;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    .time-unit { display: flex; flex-direction: column; }
-    .number { font-size: 2.2rem; font-weight: 600; letter-spacing: -1px; }
-    .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: #95a5a6; }
-
-    h2 { font-weight: 400; font-size: 1.1rem; margin: 0 0 2rem 0; line-height: 1.6; }
-
-    .btn-group {
-      display: flex;
-      gap: 12px;
-      width: 100%;
+    .time-unit { display: flex; flex-direction: column; align-items: center; }
+    .number { 
+        font-size: 3rem; 
+        font-weight: 600; 
+        letter-spacing: -2px; 
+        color: var(--text-main);
+        line-height: 1;
+    }
+    .label { 
+        font-size: 0.7rem; 
+        text-transform: uppercase; 
+        letter-spacing: 2px; 
+        color: #a0a0a0; 
+        margin-top: 8px;
     }
 
-    button {
-      flex: 1;
-      padding: 14px;
-      border-radius: 14px;
-      border: none;
-      font-family: inherit;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-size: 0.9rem;
+    .reveal-text {
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--accent-red);
+      letter-spacing: 1px;
+      margin-top: 10px;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding-top: 20px;
+      width: 60%;
     }
 
-    .btn-yes { background: var(--text-main); color: white; }
-    .btn-no { background: white; color: var(--text-main); border: 1px solid #dfe6e9; }
-    button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    #alt-input-container {
-      margin-top: 1.5rem;
-      display: none;
-      width: 100%;
-      animation: fadeIn 0.4s ease;
+    .copyright {
+      position: absolute;
+      bottom: 2rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #bdc3c7;
     }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #dfe6e9;
-      margin-bottom: 12px;
-      box-sizing: border-box;
-      outline: none;
-      font-family: inherit;
-    }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    
-    #status-msg { margin-top: 1.5rem; font-size: 0.85rem; font-weight: 600; min-height: 1.2rem; }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <div class="icon-wrapper">
-      <svg class="icon-fade" id="icon-locker" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-      <svg class="icon-fade" id="icon-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-      <svg class="icon-fade" id="icon-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-    </div>
-
     <div class="countdown">
       <div class="time-unit"><span class="number" id="days">00</span><span class="label">Zile</span></div>
       <div class="time-unit"><span class="number" id="hours">00</span><span class="label">Ore</span></div>
       <div class="time-unit"><span class="number" id="mins">00</span><span class="label">Min</span></div>
     </div>
 
-    <div id="interactive-content">
-        <h2>Poți să îți iei liber în perioada<br><strong>5-9 martie?</strong></h2>
-
-      <div class="btn-group" id="btn-group">
-        <button class="btn-yes" id="btn-yes" onclick="sendResponse('Da (5-9 Martie)')">Da, sigur</button>
-        <button class="btn-no" onclick="showAltInput()">Nu pot</button>
-      </div>
-
-      <div id="alt-input-container">
-        <input type="text" id="alt-period" placeholder="Scrie perioada potrivită...">
-        <button class="btn-yes" style="width: 100%" onclick="submitAlt()">Trimite</button>
-      </div>
+    <div class="reveal-text">
+        The Reveal <br> <strong>01.03.2025</strong>
     </div>
+  </div>
 
-    <p id="status-msg"></p>
+  <div class="copyright">
+    La Capital
   </div>
 
   <script>
-    // 1. CONFIGURATION
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwBaucjTFFinc96hf1JsvwAU5YDQ6LFFuHOmh6PRVtw2KlMPF-o5eJb0mOdkVk8lEAE/exec'; 
-
-    // 2. COUNTDOWN LOGIC
     function updateTimer() {
-      const target = new Date(2026, 2, 5, 0, 0, 0); 
-      const diff = target - new Date();
-      if (diff <= 0) return;
-      document.getElementById('days').innerText = String(Math.floor(diff / 864e5)).padStart(2, '0');
-      document.getElementById('hours').innerText = String(Math.floor((diff % 864e5) / 36e5)).padStart(2, '0');
-      document.getElementById('mins').innerText = String(Math.floor((diff % 36e5) / 6e4)).padStart(2, '0');
+      // Target: March 5th, 2025
+      const target = new Date(2025, 2, 5, 0, 0, 0); 
+      const now = new Date();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        document.getElementById('days').innerText = "00";
+        document.getElementById('hours').innerText = "00";
+        document.getElementById('mins').innerText = "00";
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      document.getElementById('days').innerText = String(d).padStart(2, '0');
+      document.getElementById('hours').innerText = String(h).padStart(2, '0');
+      document.getElementById('mins').innerText = String(m).padStart(2, '0');
     }
+
     setInterval(updateTimer, 1000);
     updateTimer();
-
-    // 3. ICON ANIMATION
-    const icons = [document.getElementById('icon-locker'), document.getElementById('icon-camera'), document.getElementById('icon-question')];
-    let idx = 0;
-    setInterval(() => {
-      icons.forEach(i => i.classList.remove('active'));
-      idx = (idx + 1) % icons.length;
-      icons[idx].classList.add('active');
-    }, 2500);
-    icons[0].classList.add('active');
-
-    // 4. DATA HANDLING
-    function showAltInput() {
-      document.getElementById('btn-group').style.display = 'none';
-      document.getElementById('alt-input-container').style.display = 'block';
-    }
-
-    async function sendResponse(content) {
-      const status = document.getElementById('status-msg');
-      const btns = document.querySelectorAll('button');
-      
-      // Visual feedback
-      btns.forEach(b => b.disabled = true);
-      status.style.color = "#636e72";
-      status.innerText = "Se trimite...";
-
-      try {
-        const payload = {
-          type: 'feedback',
-          feedback: content
-        };
-
-        // Note: Google Apps Script requires 'no-cors' for POST usually, 
-        // but since you have a specific DOPOST, we use a simple fetch.
-        await fetch(WEB_APP_URL, {
-          method: 'POST',
-          mode: 'no-cors', // Critical for Google Scripts
-          cache: 'no-cache',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        // Since 'no-cors' won't return a readable body, we assume success if no error thrown
-        document.getElementById('interactive-content').style.opacity = '0.3';
-        document.getElementById('interactive-content').style.pointerEvents = 'none';
-        status.style.color = "var(--accent-green)";
-        status.innerText = "Am primit răspunsul tău! ✨";
-        
-      } catch (e) {
-        status.style.color = "var(--accent-red)";
-        status.innerText = "Eroare. Te rog trimite-mi un mesaj direct.";
-        btns.forEach(b => b.disabled = false);
-      }
-    }
-
-    function submitAlt() {
-      const val = document.getElementById('alt-period').value.trim();
-      if (val) sendResponse(`Nu (Propune: ${val})`);
-    }
   </script>
 </body>
 </html>
