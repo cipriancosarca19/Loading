@@ -2,7 +2,8 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#fcfaf7">
   <title>The Surprise - Spain 2026</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
@@ -10,64 +11,60 @@
       --accent-red: #AA151B;
       --accent-gold: #F1BF00;
       --text-main: #2d3436;
+      --bg-base: #fcfaf7;
     }
 
-    /* Apply background to HTML to ensure it bleeds into the notch and home bar */
-    html {
-      height: -webkit-fill-available;
-      background: #fcfaf7; /* Base Spanish off-white */
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; }
 
-    body {
+    /* The Fix: Apply background to both HTML and Body and force them to fill the glass */
+    html, body {
       margin: 0;
       padding: 0;
       width: 100%;
-      /* Dynamic viewport height specifically for mobile browsers */
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-      color: var(--text-main);
-      overflow: hidden;
-      position: relative;
+      height: 100%;
+      background-color: var(--bg-base);
+      /* Prevent the "bounce" that reveals white space */
+      overflow: hidden; 
+      position: fixed;
     }
 
-    /* Fixed overlay that forces the color to stay pinned behind browser bars */
-    .bg-layer {
+    /* Fixed background that sits BEHIND everything, including browser chrome */
+    html::before {
+      content: "";
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
-      height: 100vh;
+      height: 100dvh; /* Dynamic Viewport Height for mobile */
       z-index: -1;
-      /* Faded Spanish Flag Tones */
       background: 
-        radial-gradient(circle at 10% 10%, rgba(170, 21, 27, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 90% 90%, rgba(241, 191, 0, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 50% 10%, rgba(241, 191, 0, 0.1) 0%, transparent 40%);
-      background-color: #fcfaf7;
-      animation: drift 15s ease-in-out infinite alternate;
+        radial-gradient(circle at 15% 15%, rgba(170, 21, 27, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(241, 191, 0, 0.15) 0%, transparent 45%);
+      background-color: var(--bg-base);
+      animation: meshDrift 20s ease-in-out infinite alternate;
     }
 
-    @keyframes drift {
-      from { transform: scale(1); }
-      to { transform: scale(1.1) translate(2%, 2%); }
+    @keyframes meshDrift {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.1) translate(2%, 2%); }
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none; /* Prevents pulling the page down */
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
-      padding: 3rem 1rem;
+      padding: 3.5rem 1rem;
       border-radius: 40px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.03);
       text-align: center;
-      width: 85%;
+      width: 88%;
       max-width: 400px;
       border: 1px solid rgba(255, 255, 255, 0.8);
       z-index: 10;
@@ -87,7 +84,7 @@
       width: 36px;
       height: 36px;
       opacity: 0;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s ease-in-out;
       fill: none;
       stroke: var(--accent-red);
       stroke-width: 1.5;
@@ -102,56 +99,37 @@
       display: flex;
       justify-content: center;
       gap: 0.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
     }
 
     .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 62px; }
-    .number { 
-        font-size: 2.4rem; 
-        font-weight: 600; 
-        letter-spacing: -1.5px; 
-        line-height: 1; 
-    }
-    .label { 
-        font-size: 0.55rem; 
-        text-transform: uppercase; 
-        letter-spacing: 1.5px; 
-        color: #999; 
-        margin-top: 8px; 
-    }
+    .number { font-size: 2.6rem; font-weight: 600; letter-spacing: -1.5px; line-height: 1; }
+    .label { font-size: 0.55rem; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin-top: 8px; }
 
     #secs {
         color: var(--accent-red);
-        animation: heartPulse 1s ease-in-out infinite;
+        animation: pulse 1s ease-in-out infinite;
         display: inline-block;
     }
 
-    @keyframes heartPulse {
-        0% { transform: scale(1); }
-        15% { transform: scale(1.1); }
-        30% { transform: scale(1); }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.08); }
     }
 
     .reveal-text {
       font-weight: 300;
       font-size: 0.95rem;
       border-top: 1px solid rgba(0,0,0,0.05);
-      padding-top: 20px;
+      padding-top: 25px;
       width: 60%;
       margin: 0 auto;
     }
 
-    .reveal-date { 
-        color: var(--accent-red); 
-        font-weight: 600; 
-        display: block; 
-        margin-top: 5px; 
-        font-size: 1.1rem; 
-    }
+    .reveal-date { color: var(--accent-red); font-weight: 600; display: block; margin-top: 5px; font-size: 1.1rem; }
 
     .copyright {
       position: absolute;
-      /* This specifically targets the safe area at the bottom of iPhones */
       bottom: calc(1.5rem + env(safe-area-inset-bottom));
       font-size: 0.6rem;
       text-transform: uppercase;
@@ -161,8 +139,6 @@
   </style>
 </head>
 <body>
-
-  <div class="bg-layer"></div>
 
   <div class="card">
     <div class="icon-wrapper">
@@ -189,7 +165,6 @@
 
   <script>
     function updateTimer() {
-      // Current Date for 2026 Countdown
       const target = new Date(2026, 2, 5, 0, 0, 0); 
       const now = new Date();
       const diff = target - now;
@@ -210,7 +185,6 @@
       document.getElementById('secs').innerText = String(s).padStart(2, '0');
     }
 
-    // High speed icon swapping
     const icons = [document.getElementById('icon-plane'), document.getElementById('icon-sun'), document.getElementById('icon-map')];
     let idx = 0;
     setInterval(() => {
