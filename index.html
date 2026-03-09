@@ -7,182 +7,185 @@
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #000000;
-            --text-color: #ffffff;
-            --accent-color: #ff4b2b;
-            --medal-gold: #d4af37;
-            --card-bg: #1c1c1e;
+            --bg-color: #ffffff;
+            --text-color: #1d1d1f;
+            --accent-red: #d32f2f;
+            --medal-color: #f5f5f7;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
         }
 
-        /* Award Container */
-        .award-container {
-            text-align: center;
-            margin-top: 50px;
-            animation: fadeIn 1.2s ease-out;
-        }
-
-        /* Medal Styling */
-        .medal-wrapper {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 20px;
-            background: linear-gradient(145deg, #2c2c2e, #000000);
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Madrid Logo SVG (Bear and Tree) */
-        .madrid-logo {
-            width: 140px;
-            height: 140px;
-            fill: #ff6b6b; /* Vibrant color like the image */
-            filter: drop-shadow(0 0 10px rgba(255,107,107,0.4));
+        .header-text {
+            margin-top: 40px;
+            font-size: 18px;
+            color: #86868b;
+            font-weight: 500;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 32px;
+            margin: 10px 0;
             font-weight: 700;
-            margin: 10px 0 5px;
         }
 
+        /* 3D Canvas Container */
+        #canvas-container {
+            width: 100%;
+            height: 400px;
+            cursor: grab;
+            touch-action: none;
+        }
+        #canvas-container:active { cursor: grabbing; }
+
         .subtitle {
-            color: #8e8e93;
             font-size: 16px;
+            color: var(--accent-red);
+            font-weight: 600;
             margin-bottom: 40px;
         }
 
         /* Collection Section */
-        .collection-section {
-            width: 100%;
-            max-width: 400px;
-            margin-top: 40px;
-            border-top: 1px solid #38383a;
-            padding-top: 20px;
-        }
-
-        .collection-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #8e8e93;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        .emblem-grid {
+        .collection {
+            width: 90%;
+            max-width: 500px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
+            padding: 20px;
+            border-top: 1px solid #e5e5e5;
         }
 
-        .emblem-item {
+        .emblem-locked {
             display: flex;
             flex-direction: column;
             align-items: center;
-            opacity: 0.3; /* Locked state */
-            filter: grayscale(1);
+            opacity: 0.2;
         }
 
-        .emblem-circle {
-            width: 60px;
-            height: 60px;
-            background: #2c2c2e;
+        .circle {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 8px;
-            border: 2px dashed #48484a;
+            background: #f5f5f7;
+            border: 2px solid #d2d2d7;
+            margin-bottom: 10px;
         }
-
-        .emblem-name {
-            font-size: 10px;
-            color: #8e8e93;
-            text-align: center;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Bottom Nav (Aesthetics) */
-        .nav-bar {
-            position: fixed;
-            bottom: 20px;
-            width: 90%;
-            max-width: 350px;
-            background: rgba(28, 28, 30, 0.8);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-        }
-
-        .nav-item { color: #8e8e93; font-size: 12px; text-decoration: none; text-align: center; }
-        .nav-item.active { color: #30d158; }
     </style>
 </head>
 <body>
 
-    <div class="award-container">
-        <div class="medal-wrapper">
-            <svg class="madrid-logo" viewBox="0 0 100 100">
-                <path d="M50 20 Q65 20 65 35 Q65 50 50 50 Q35 50 35 35 Q35 20 50 20" />
-                <rect x="47" y="45" width="6" height="30" />
-                <path d="M30 75 Q25 75 25 65 L25 50 Q25 40 35 40 L45 40 L45 75 Z" />
-                <circle cx="50" cy="10" r="2" fill="white" />
-                <circle cx="70" cy="15" r="2" fill="white" />
-                <circle cx="85" cy="30" r="2" fill="white" />
-            </svg>
-        </div>
+    <p class="header-text">Ai câștigat:</p>
+    <h1>Madrid pentru începători</h1>
+    
+    <div id="canvas-container"></div>
 
-        <h1>Madrid pentru începători</h1>
-        <p class="subtitle">Colecționează-le pe toate!</p>
+    <p class="subtitle">Colecționează-le pe toate!</p>
+
+    <div class="collection">
+        <div class="emblem-locked"><div class="circle"></div></div>
+        <div class="emblem-locked"><div class="circle"></div></div>
+        <div class="emblem-locked"><div class="circle"></div></div>
     </div>
 
-    <div class="collection-section">
-        <span class="collection-title">Următoarele Embleme</span>
-        <div class="emblem-grid">
-            <div class="emblem-item">
-                <div class="emblem-circle">🔒</div>
-                <div class="emblem-name">Retiro Explorer</div>
-            </div>
-            <div class="emblem-item">
-                <div class="emblem-circle">🔒</div>
-                <div class="emblem-name">Museo Expert</div>
-            </div>
-            <div class="emblem-item">
-                <div class="emblem-circle">🔒</div>
-                <div class="emblem-name">Tapas Master</div>
-            </div>
-        </div>
-    </div>
+    <script type="module">
+        import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
+        import { OrbitControls } from 'https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls.js';
 
-    <div class="nav-bar">
-        <div class="nav-item active">● Summary</div>
-        <div class="nav-item">● Workout</div>
-        <div class="nav-item">● Sharing</div>
-    </div>
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
 
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+
+        // Create the Medal (a thick cylinder)
+        const geometry = new THREE.CylinderGeometry(1.5, 1.5, 0.2, 64);
+        
+        // Materials
+        const silverMat = new THREE.MeshStandardMaterial({ 
+            color: 0xe0e0e2, 
+            metalness: 0.7, 
+            roughness: 0.2 
+        });
+
+        const medal = new THREE.Mesh(geometry, silverMat);
+        medal.rotation.x = Math.PI / 2;
+        scene.add(medal);
+
+        // Add Front Image (Madrid Bear/Tree)
+        const loader = new THREE.TextureLoader();
+        // Using a drawing-style placeholder for the Madrid icon
+        const frontTexture = loader.load('https://i.imgur.com/8N69V3O.png'); 
+        const frontGeo = new THREE.CircleGeometry(1.4, 32);
+        const frontMat = new THREE.MeshBasicMaterial({ map: frontTexture, transparent: true });
+        const frontSide = new THREE.Mesh(frontGeo, frontMat);
+        frontSide.position.y = 0.101; 
+        frontSide.rotation.x = -Math.PI / 2;
+        medal.add(frontSide);
+
+        // Add Back Text "FOREVER"
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 512;
+        canvas.height = 512;
+        ctx.fillStyle = "white";
+        ctx.fillRect(0,0,512,512);
+        ctx.fillStyle = "#333";
+        ctx.font = "Bold 80px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("FOREVER", 256, 256);
+        
+        const backTexture = new THREE.CanvasTexture(canvas);
+        const backGeo = new THREE.CircleGeometry(1.4, 32);
+        const backMat = new THREE.MeshBasicMaterial({ map: backTexture });
+        const backSide = new THREE.Mesh(backGeo, backMat);
+        backSide.position.y = -0.101;
+        backSide.rotation.x = Math.PI / 2;
+        backSide.rotation.z = Math.PI; // Flip so text reads correctly
+        medal.add(backSide);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.enableZoom = false;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 2.0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+
+        animate();
+    </script>
 </body>
 </html>
