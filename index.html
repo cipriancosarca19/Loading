@@ -9,10 +9,9 @@
         :root {
             --bg: #ffffff;
             --text: #1d1d1f;
-            --accent: #ff3b30; /* Madrid Red */
-            --silver-mat: #f5f5f7;
+            --accent: #ff3b30;
+            --silver: #f5f5f7;
             --shadow: 0 20px 40px rgba(0,0,0,0.06);
-            --border: #e5e5e7;
         }
 
         body {
@@ -27,125 +26,49 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Header Styling */
-        .header {
-            text-align: center;
-            margin-top: 60px;
-            padding: 0 20px;
-        }
+        .header { text-align: center; margin-top: 60px; padding: 0 20px; }
+        .header p { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #86868b; margin-bottom: 8px; }
+        h1 { font-size: 34px; font-weight: 800; margin: 0; letter-spacing: -1px; line-height: 1.1; }
 
-        .header p {
-            font-size: 14px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #86868b;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            font-size: 38px;
-            font-weight: 800;
-            margin: 0;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
-        }
-
-        /* 3D Container */
         #canvas-container {
             width: 100%;
-            height: 480px;
+            height: 450px;
             cursor: grab;
             position: relative;
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
-        /* Subtle Interaction Hint */
         #hint {
             position: absolute;
-            bottom: 25px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 13px;
+            font-size: 12px;
             color: #a1a1a6;
-            background: rgba(245, 245, 247, 0.9);
-            padding: 10px 20px;
-            border-radius: 25px;
+            background: rgba(245, 245, 247, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
             pointer-events: none;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: opacity 0.4s;
         }
 
-        #hint.hidden {
-            opacity: 0;
-            transform: translateX(-50%) translateY(10px);
-        }
+        .subtitle { font-size: 18px; color: var(--accent); font-weight: 700; margin-bottom: 40px; }
 
-        .subtitle {
-            font-size: 19px;
-            color: var(--accent);
-            font-weight: 700;
-            margin-bottom: 60px;
-            letter-spacing: -0.5px;
-        }
-
-        /* Collection Section */
         .collection-card {
-            width: 90%;
-            max-width: 480px;
+            width: 85%;
+            max-width: 400px;
             background: #fbfbfd;
-            border-radius: 35px;
-            padding: 35px;
+            border-radius: 30px;
+            padding: 25px;
             box-shadow: var(--shadow);
-            margin-bottom: 100px;
-            border: 1px solid var(--border);
-        }
-
-        .collection-card h3 {
-            font-size: 13px;
-            font-weight: 600;
-            color: #86868b;
-            margin-top: 0;
-            margin-bottom: 30px;
+            margin-bottom: 60px;
+            border: 1px solid #efeff4;
             text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-        }
-
-        .locked-slot {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0.2;
-            transition: opacity 0.3s ease;
-        }
-
-        .locked-slot:hover {
-            opacity: 0.35;
-        }
-
-        .circle-slot {
-            width: 70px;
-            height: 70px;
-            border-radius: 25px;
-            background: #e5e5e7;
-            border: 2px dashed #d2d2d7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #a1a1a6;
-            font-size: 20px;
-        }
-
+        .collection-card h3 { font-size: 11px; color: #86868b; letter-spacing: 1px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .circle-slot { width: 100%; aspect-ratio: 1; border-radius: 20px; background: #e5e5e7; border: 2px dashed #d2d2d7; display: flex; align-items: center; justify-content: center; opacity: 0.3; font-size: 20px; }
     </style>
 </head>
 <body>
@@ -156,7 +79,7 @@
     </div>
     
     <div id="canvas-container">
-        <div id="hint">⟷ Rotește trofeul pentru detalii</div>
+        <div id="hint">⟷ Rotește trofeul</div>
     </div>
 
     <p class="subtitle">Colecționează-le pe toate!</p>
@@ -164,9 +87,9 @@
     <div class="collection-card">
         <h3>URMĂTOARELE OBIECTIVE</h3>
         <div class="grid">
-            <div class="locked-slot"><div class="circle-slot">🔒</div></div>
-            <div class="locked-slot"><div class="circle-slot">🔒</div></div>
-            <div class="locked-slot"><div class="circle-slot">🔒</div></div>
+            <div class="circle-slot">🔒</div>
+            <div class="circle-slot">🔒</div>
+            <div class="circle-slot">🔒</div>
         </div>
     </div>
 
@@ -181,120 +104,67 @@
         scene.background = new THREE.Color(0xffffff);
 
         const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.z = 7; // Pull back slightly for better framing
+        camera.position.z = 6;
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
-        // Professional Studio Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(ambientLight);
-        
-        const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        mainLight.position.set(2, 5, 5);
-        scene.add(mainLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
 
-        const fillLight = new THREE.PointLight(0xffffff, 0.4);
-        fillLight.position.set(-5, -2, 2);
-        scene.add(fillLight);
-
-        // Group for the trophy
         const trophy = new THREE.Group();
         scene.add(trophy);
 
-        // --- 1. The Coin Body (Polished Silver) ---
-        // Thick cylinder with beveled edge look
-        const geometry = new THREE.CylinderGeometry(1.9, 1.9, 0.3, 64);
-        const silverMaterial = new THREE.MeshStandardMaterial({ 
-            color: 0xf5f5f7,
-            metalness: 0.8,
-            roughness: 0.12,
-            emissive: 0x1a1a1a
-        });
-        const mesh = new THREE.Mesh(geometry, silverMaterial);
-        mesh.rotation.x = Math.PI / 2;
-        trophy.add(mesh);
+        // Body of the medal
+        const bodyGeo = new THREE.CylinderGeometry(1.8, 1.8, 0.25, 64);
+        const silverMat = new THREE.MeshStandardMaterial({ color: 0xf0f0f2, metalness: 0.7, roughness: 0.2 });
+        const body = new THREE.Mesh(bodyGeo, silverMat);
+        body.rotation.x = Math.PI / 2;
+        trophy.add(body);
 
-        // --- 2. The Detailed Madrid Emblem (Front) ---
-        // Using a high-quality SVG texture directly
+        // MADRID EMBEM (Embedded Base64 - No External Loading)
         const loader = new THREE.TextureLoader();
-        
-        // This is a trusted link to the official SVG (Wikimedia/official source)
-        // I have used a 'CORS proxy' to ensure it loads in the browser without issues.
-        const svgUrl = "https://cors-anywhere.herokuapp.com/https://upload.wikimedia.org/wikipedia/commons/e/ec/Escudo_de_Madrid.svg";
+        // This is a high-quality stylized emblem of the Madrid Bear and Tree
+        const emblemData = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik01MCAxNWMtMTUgMC0yMCAxMC0yMCAyNXM1IDI1IDIwIDI1czIwLTEwIDIwLTI1LTUtMjUtMjAtMjV6IiBmaWxsPSIjRTM0MjM0Ii8+PHBhdGggZD0iTTQ4IDQwdjQ1aDRWNDBoLTR6IiBmaWxsPSIjNUIzQTJGIi8+PHBhdGggZD0iTTcwIDg1SDU1VjY1YzAtNS01LTEwLTEwLTEwaC01VjUwaDEwdjIwaDEwdjE1eiIgZmlsbD0iIzMzMyIvPjxjaXJjbGUgY3g9IjUwIiBjeT0iMTIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iNjAiIGN5PSIxNSIgcj0iMiIgZmlsbD0id2hpdGUiLz48Y2lyY2xlIGN4PSI0MCIgY3k9IjE1IiByPSIyIiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjY1IiBjeT0iMjUiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMzUiIGN5PSIyNSIgcj0iMiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=";
 
-        loader.load(svgUrl, (texture) => {
-            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-            
-            const emblemGeo = new THREE.CircleGeometry(1.7, 64);
-            const emblemMat = new THREE.MeshStandardMaterial({ 
-                map: texture, 
-                transparent: true,
-                metalness: 0.4,
-                roughness: 0.4,
-                depthWrite: false // Helps prevent rendering artifacts
-            });
-
-            const frontEmblem = new THREE.Mesh(emblemGeo, emblemMat);
-            frontEmblem.position.z = 0.151; // Raised slightly above the coin
-            trophy.add(frontEmblem);
-        }, undefined, (error) => {
-            console.error("Error loading SVG emblem. Using high-quality fallback color.");
-            // If the SVG fails, use a beautiful red texture with a placeholder
-            const fallbackGeo = new THREE.CircleGeometry(1.7, 64);
-            const fallbackMat = new THREE.MeshStandardMaterial({ color: 0xff3b30, metalness: 0.5 });
-            const frontEmblem = new THREE.Mesh(fallbackGeo, fallbackMat);
-            frontEmblem.position.z = 0.151;
-            trophy.add(frontEmblem);
+        loader.load(emblemData, (tex) => {
+            const faceGeo = new THREE.CircleGeometry(1.6, 64);
+            const faceMat = new THREE.MeshStandardMaterial({ map: tex, transparent: true });
+            const front = new THREE.Mesh(faceGeo, faceMat);
+            front.position.z = 0.13;
+            trophy.add(front);
         });
 
-
-        // --- 3. The Back Side ("FOREVER" in Madrid Red) ---
+        // BACK SIDE
         const backCanvas = document.createElement('canvas');
         const bCtx = backCanvas.getContext('2d');
-        backCanvas.width = 1024;
-        backCanvas.height = 1024;
-        bCtx.fillStyle = "#f5f5f7"; // Match silver body
-        bCtx.fillRect(0,0,1024,1024);
-        bCtx.font = "bold 150px 'Plus Jakarta Sans'";
-        bCtx.fillStyle = "#ff3b30"; // Madrid Red for the engraving
-        bCtx.textAlign = "center";
-        bCtx.textBaseline = "middle";
-        bCtx.fillText("FOREVER", 512, 512);
+        backCanvas.width = 512; backCanvas.height = 512;
+        bCtx.fillStyle = "#f0f0f2"; bCtx.fillRect(0,0,512,512);
+        bCtx.font = "bold 80px 'Plus Jakarta Sans'";
+        bCtx.fillStyle = "#ff3b30"; bCtx.textAlign = "center"; bCtx.textBaseline = "middle";
+        bCtx.fillText("FOREVER", 256, 256);
 
         const backTex = new THREE.CanvasTexture(backCanvas);
-        const backGeo = new THREE.CircleGeometry(1.75, 64);
-        const backFace = new THREE.Mesh(backGeo, new THREE.MeshStandardMaterial({ map: backTex, metalness: 0.3 }));
-        backFace.position.z = -0.151;
+        const backFace = new THREE.Mesh(new THREE.CircleGeometry(1.6, 64), new THREE.MeshStandardMaterial({ map: backTex }));
+        backFace.position.z = -0.13;
         backFace.rotation.y = Math.PI;
         trophy.add(backFace);
 
-        // Orbit Controls (for interaction)
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.08;
-        controls.enableZoom = false; // Keep the trophy in frame
-        controls.autoRotate = false; // Keep it still until touched
-
-        // Hide hint on interaction
-        controls.addEventListener('start', () => {
-            hint.classList.add('hidden');
-        });
+        controls.enableZoom = false;
+        controls.addEventListener('start', () => hint.style.opacity = '0');
 
         function animate() {
             requestAnimationFrame(animate);
-            controls.update(); // Necessary for damping
+            controls.update();
             renderer.render(scene, camera);
         }
-
-        window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        });
-
         animate();
     </script>
 </body>
