@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madrid Award</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Madrid Premium Award</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #ffffff; color: #1d1d1f; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; -webkit-font-smoothing: antialiased; }
-        .header { text-align: center; margin-top: 50px; }
-        .header p { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #86868b; margin-bottom: 5px; }
-        h1 { font-size: 32px; font-weight: 800; margin: 0; letter-spacing: -1px; }
-        #canvas-container { width: 100%; height: 420px; cursor: grab; display: flex; justify-content: center; align-items: center; }
-        .subtitle { font-size: 18px; color: #ff3b30; font-weight: 700; margin: 15px 0; }
-        .collection-card { width: 90%; max-width: 400px; background: #fbfbfd; border-radius: 28px; padding: 25px; border: 1px solid #efeff4; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        .circle-slot { width: 100%; aspect-ratio: 1; border-radius: 20px; background: #f2f2f7; border: 1px solid #e5e5ea; display: flex; align-items: center; justify-content: center; opacity: 0.3; font-size: 20px; }
+        body { margin: 0; background-color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+        .header { text-align: center; margin-top: 40px; }
+        .header p { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #86868b; margin-bottom: 4px; }
+        h1 { font-size: 32px; font-weight: 800; margin: 0; color: #1d1d1f; letter-spacing: -1px; }
+        #canvas-container { width: 100%; height: 400px; cursor: grab; }
+        .footer-text { color: #ff3b30; font-weight: 700; font-size: 18px; margin-top: 20px; }
+        .objectives { margin-top: 30px; width: 90%; max-width: 400px; background: #f5f5f7; border-radius: 24px; padding: 20px; display: flex; justify-content: space-around; }
+        .slot { width: 80px; height: 80px; background: #e8e8ed; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #a1a1a6; }
     </style>
 </head>
 <body>
+
     <div class="header">
-        <p>Ai câștigat:</p>
+        <p>AI CÂȘTIGAT:</p>
         <h1>Madrid pentru începători</h1>
     </div>
+
     <div id="canvas-container"></div>
-    <p class="subtitle">Colecționează-le pe toate!</p>
-    <div class="collection-card">
-        <div class="grid">
-            <div class="circle-slot">🔒</div>
-            <div class="circle-slot">🔒</div>
-            <div class="circle-slot">🔒</div>
-        </div>
+
+    <p class="footer-text">Colecționează-le pe toate!</p>
+
+    <div class="objectives">
+        <div class="slot">🔒</div>
+        <div class="slot">🔒</div>
+        <div class="slot">🔒</div>
     </div>
 
     <script type="module">
@@ -39,7 +40,8 @@
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xffffff);
-        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 1000);
+
+        const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 1000);
         camera.position.z = 5;
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -47,50 +49,54 @@
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
 
-        // Studio Lighting
-        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5, 5, 5);
-        scene.add(light);
-
-        const trophy = new THREE.Group();
-        scene.add(trophy);
-
-        // Medal Body
-        const bodyGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.2, 64);
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xdcdce0, metalness: 0.9, roughness: 0.1 });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.rotation.x = Math.PI / 2;
-        trophy.add(body);
-
-        // MADRID EMBLEM (Embedded directly so it NEVER fails)
-        const loader = new THREE.TextureLoader();
-        const emblemBase64 = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cGF0aCBkPSJNNTAgMTBjLTEyIDAtMTcgOC0xNyAyMHM0IDIwIDE3IDIwczE3LTggMTctMjAtNS0yMC0xNy0yMHoiIGZpbGw9IiNlMzQyMzQiLz48cGF0aCBkPSJNNDggMzV2NTBoNFYzNUg0OHoiIGZpbGw9IiM1YjNhMmYiLz48cGF0aCBkPSJNNjUgODBINTVWNjVjMC00LTMtOC04LThoLTNWNTBoOHYxNWg4djE1eiIgZmlsbD0iIzMzMyIvPjwvc3ZnPg==";
+        // --- Premium Lighting ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
         
-        loader.load(emblemBase64, (tex) => {
-            const faceGeo = new THREE.CircleGeometry(1.4, 64);
-            const faceMat = new THREE.MeshStandardMaterial({ map: tex, transparent: true });
-            const front = new THREE.Mesh(faceGeo, faceMat);
-            front.position.z = 0.11;
-            trophy.add(front);
-        });
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+        mainLight.position.set(5, 5, 5);
+        scene.add(mainLight);
 
-        // Back Face
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 512; canvas.height = 512;
-        ctx.fillStyle = "#dcdce0"; ctx.fillRect(0,0,512,512);
-        ctx.font = "bold 60px sans-serif"; ctx.fillStyle = "#333"; ctx.textAlign = "center";
-        ctx.fillText("FOREVER", 256, 260);
-        const back = new THREE.Mesh(new THREE.CircleGeometry(1.4, 64), new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(canvas) }));
-        back.position.z = -0.11; back.rotation.y = Math.PI;
-        trophy.add(back);
+        const trophyGroup = new THREE.Group();
+        scene.add(trophyGroup);
+
+        // --- Creating the 3D Medal Body ---
+        // This uses a thicker geometry for that physical "coin" look
+        const bodyGeo = new THREE.CylinderGeometry(1.5, 1.5, 0.2, 64);
+        const silverMat = new THREE.MeshStandardMaterial({ 
+            color: 0xd2d2d7, 
+            metalness: 0.9, 
+            roughness: 0.1 
+        });
+        const body = new THREE.Mesh(bodyGeo, silverMat);
+        body.rotation.x = Math.PI / 2;
+        trophyGroup.add(body);
+
+        // --- Detailed Madrid Emblem (Oso y el Madroño) ---
+        // Using a Shape to create a real 3D extrusion of the icon
+        const shape = new THREE.Shape();
+        // Simplified Bear & Tree silhouette
+        shape.moveTo(-0.2, -0.6); shape.lineTo(0.2, -0.6); shape.lineTo(0.2, 0); 
+        shape.lineTo(0.5, 0); shape.bezierCurveTo(0.7, 0.5, 0.3, 0.8, 0, 0.8);
+        shape.bezierCurveTo(-0.3, 0.8, -0.7, 0.5, -0.5, 0); shape.lineTo(-0.2, 0);
+
+        const extrudeSettings = { depth: 0.1, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02 };
+        const iconGeo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const iconMat = new THREE.MeshStandardMaterial({ color: 0xff3b30, metalness: 0.5, roughness: 0.2 });
+        const icon = new THREE.Mesh(iconGeo, iconMat);
+        icon.position.set(0, 0, 0.1);
+        trophyGroup.add(icon);
 
         const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.enableZoom = false;
 
-        function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
+        function animate() {
+            requestAnimationFrame(animate);
+            trophyGroup.rotation.y += 0.005; // Subtle auto-rotation
+            controls.update();
+            renderer.render(scene, camera);
+        }
         animate();
     </script>
 </body>
