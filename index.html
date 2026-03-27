@@ -15,7 +15,7 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -46,7 +46,6 @@
             padding: 8px 16px;
             border-radius: 20px;
             pointer-events: none;
-            transition: opacity 0.5s;
         }
 
         .subtitle { font-size: 18px; color: var(--accent); font-weight: 700; margin-top: 10px; }
@@ -63,19 +62,12 @@
             text-align: center;
         }
 
-        .collection-card h3 { font-size: 11px; color: #a1a1a6; letter-spacing: 1.5px; margin-bottom: 25px; text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .circle-slot { 
-            width: 100%; 
-            aspect-ratio: 1; 
-            border-radius: 24px; 
-            background: #f2f2f7; 
-            border: 1px solid #e5e5ea; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            opacity: 0.4; 
-            font-size: 24px;
+            width: 100%; aspect-ratio: 1; border-radius: 24px; 
+            background: #f2f2f7; border: 1px solid #e5e5ea; 
+            display: flex; align-items: center; justify-content: center; 
+            opacity: 0.4; font-size: 24px;
         }
     </style>
 </head>
@@ -93,7 +85,6 @@
     <p class="subtitle">Colecționează-le pe toate!</p>
 
     <div class="collection-card">
-        <h3>URMĂTOARELE OBIECTIVE</h3>
         <div class="grid">
             <div class="circle-slot">🔒</div>
             <div class="circle-slot">🔒</div>
@@ -115,11 +106,10 @@
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.outputEncoding = THREE.sRGBEncoding;
         container.appendChild(renderer.domElement);
 
-        // Lights to create the metallic "rim" effect
-        const amb = new THREE.AmbientLight(0xffffff, 0.5);
+        // Studio Lighting
+        const amb = new THREE.AmbientLight(0xffffff, 0.8);
         scene.add(amb);
         const point = new THREE.PointLight(0xffffff, 1);
         point.position.set(5, 5, 5);
@@ -128,66 +118,57 @@
         const trophy = new THREE.Group();
         scene.add(trophy);
 
-        const loader = new THREE.TextureLoader();
-
-        // Texture for the "Old Minted Metal" look from your provided URL
-        const metalTexture = loader.load('https://collections.rmg.co.uk/media/386/137/e5003_1.jpg');
-
-        // Create the Coin Geometry
-        const bodyGeo = new THREE.CylinderGeometry(1.9, 1.9, 0.22, 64);
-        
-        // Realistic Silver/Steel Material
+        // --- THE COIN BODY ---
+        const bodyGeo = new THREE.CylinderGeometry(1.9, 1.9, 0.25, 64);
         const bodyMat = new THREE.MeshStandardMaterial({ 
-            color: 0xcccccc, 
+            color: 0xbdbdbd, 
             metalness: 0.9, 
-            roughness: 0.2,
-            map: metalTexture // Apply the antique texture to the edges too
+            roughness: 0.3 
         });
-        
         const body = new THREE.Mesh(bodyGeo, bodyMat);
         body.rotation.x = Math.PI / 2;
         trophy.add(body);
 
-        // Front Face: Madrid Emblem (Professional Vector Look)
+        // --- FRONT FACE: MADRID EMBLEM ---
+        const loader = new THREE.TextureLoader();
+        // High quality Madrid Emblem (Bear & Tree)
         const emblemUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Escudo_de_Madrid.svg/512px-Escudo_de_Madrid.svg.png";
+        
         loader.load(emblemUrl, (tex) => {
-            const faceGeo = new THREE.CircleGeometry(1.8, 64);
+            const faceGeo = new THREE.CircleGeometry(1.75, 64);
             const faceMat = new THREE.MeshStandardMaterial({ 
                 map: tex, 
                 transparent: true,
                 metalness: 0.1,
-                roughness: 0.4
+                roughness: 0.5
             });
             const front = new THREE.Mesh(faceGeo, faceMat);
-            front.position.z = 0.111;
+            front.position.z = 0.126;
             trophy.add(front);
         });
 
-        // Back Face: FOREVER (Styled to look like it's engraved)
+        // --- BACK FACE: FOREVER ---
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 1024; canvas.height = 1024;
-        
-        // Background color of the back face to match the metal texture
         ctx.fillStyle = "#b0b0b0"; 
         ctx.fillRect(0,0,1024,1024);
         
-        // Engraved text styling
+        // Engraved Look
         ctx.font = "bold 100px 'Plus Jakarta Sans'";
-        ctx.fillStyle = "rgba(0,0,0,0.5)"; // Shadow for depth
         ctx.textAlign = "center";
-        ctx.fillText("FOREVER", 515, 515);
-        ctx.fillStyle = "#ffffff"; // Highlight
-        ctx.fillText("FOREVER", 510, 510);
-        ctx.fillStyle = "#333333"; // Main text color
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "rgba(0,0,0,0.3)"; // Shadow
+        ctx.fillText("FOREVER", 516, 516);
+        ctx.fillStyle = "#333333"; // Main Text
         ctx.fillText("FOREVER", 512, 512);
 
         const backTex = new THREE.CanvasTexture(canvas);
         const backFace = new THREE.Mesh(
-            new THREE.CircleGeometry(1.8, 64), 
-            new THREE.MeshStandardMaterial({ map: backTex, roughness: 0.3, metalness: 0.7 })
+            new THREE.CircleGeometry(1.75, 64), 
+            new THREE.MeshStandardMaterial({ map: backTex, metalness: 0.5, roughness: 0.4 })
         );
-        backFace.position.z = -0.111;
+        backFace.position.z = -0.126;
         backFace.rotation.y = Math.PI;
         trophy.add(backFace);
 
